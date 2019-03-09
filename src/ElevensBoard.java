@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -66,8 +67,27 @@ public class ElevensBoard extends Board {
      */
     @Override
     public boolean anotherPlayIsPossible() {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 9 *** */
-        return true;
+        for(int i : cardIndexes()){
+		    for(int j = 0; j < BOARD_SIZE; j++){
+		        if(j != i){
+		            if (cardAt(i).pointValue() + cardAt(j).pointValue() == 11){
+		                return true;
+                    }
+		            for( int k = 0; k < BOARD_SIZE; k++){
+		                if( k!= j && k != i){
+                            if (cardAt(i).pointValue() + cardAt(j).pointValue() + cardAt(k).pointValue()== 0){
+                                List<Integer> testCards = new ArrayList<>();
+                                testCards.add(k); testCards.add(i); testCards.add(k);
+                                if(containsJQK(testCards)){
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -97,7 +117,7 @@ public class ElevensBoard extends Board {
      */
     private boolean containsJQK(List<Integer> selectedCards) {
         if (selectedCards.size()==3){
-            if (cardAt(selectedCards.get(0)).pointValue()+cardAt(selectedCards.get(1)).pointValue()+cardAt(selectedCards.get(3)).pointValue()==0){
+            if (cardAt(selectedCards.get(0)).pointValue()+cardAt(selectedCards.get(1)).pointValue()+cardAt(selectedCards.get(2)).pointValue()==0){
                 boolean jack = false;
                 boolean queen = false;
                 boolean king = false;
